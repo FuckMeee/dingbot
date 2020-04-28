@@ -1,0 +1,14 @@
+{
+    "name": "weihaozhu/dingbot",
+    "description": "dingtalk robot package",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "weihaozhu",
+            "email": "471567032@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
