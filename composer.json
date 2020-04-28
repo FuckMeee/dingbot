@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "weihaozhu\\dingrot\\": "src/"
+            "weihaozhu\\dingbot\\": "src/"
         }
     }
 }
