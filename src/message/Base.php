@@ -14,16 +14,16 @@ use DingBot\Support\Http;
 class Base
 {
     /**
-     * 签名秘钥
-     * @var string
-     */
-    protected $sign_key;
-
-    /**
      * 请求路径
      * @var string
      */
     protected $url;
+
+    /**
+     * 签名秘钥
+     * @var string
+     */
+    protected $sign_key;
 
     /**
      * 请求参数
@@ -41,15 +41,17 @@ class Base
      * 当前请求方法参数
      * @var array
      */
-    protected $currentMethod = [];
+    protected $current_method = [];
 
     public function __construct($options)
     {
-        if (empty($options['url'])) {
+        if (!isset($options['url'])) {
             throw new \Exception('缺少url参数');
         }
         $this->url = $options['url'];
-        $this->sign_key = $options['sign_key'];
+        if (isset($options['sign_key'])) {
+            $this->sign_key = $options['sign_key'];
+        }
     }
 
     /**
@@ -74,9 +76,9 @@ class Base
     {
         $result = Http::doPost($this->url, $data, $options);
         if (isset($result['error'])) {
-            if (isset($this->currentMethod['method']) && empty($this->is_try)) {
+            if (isset($this->current_method['method']) && empty($this->is_try)) {
                 $this->is_try = true;
-                return call_user_func_array([$this, $this->currentMethod['method']], $this->currentMethod['arguments']);
+                return call_user_func_array([$this, $this->current_method['method']], $this->current_method['arguments']);
             }
         }
         return $result;
@@ -89,7 +91,7 @@ class Base
      */
     protected function registerApi($method, $arguments = [])
     {
-        $this->currentMethod = ['method' => $method, 'arguments' => $arguments];
+        $this->current_method = ['method' => $method, 'arguments' => $arguments];
     }
 
     /**
@@ -100,21 +102,16 @@ class Base
     {
         $timestamp = time() * 1000;
         $sign_str = $timestamp . '\n' . $this->sign_key;
-        // 签名
         $sign = urlencode(base64_encode(hash_hmac('sha256', $sign_str, $this->sign_key, true)));
-        // 拼接url
         $this->url .= '&timestamp='.$timestamp.'&sign='.$sign;
     }
 
     public function send()
     {
-        // 加签
         $this->sign();
-        // 设置参数
         $data_json = json_encode($this->params, 320);
         $options = ['header' => ['Content-Type: application/json;charset=utf-8']];
         try {
-            // 发送
             $result = $this->callPostApi($data_json, $options);
         } catch (\Exception $e) {
             return false;

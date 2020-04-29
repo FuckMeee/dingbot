@@ -9,14 +9,24 @@ namespace DingBot\Support;
 
 class Http
 {
-    // post 请求
+    /**
+     * @param $url
+     * @param $data
+     * @param array $options
+     * @return array|mixed
+     */
     public static function doPost($url, $data, $options = [])
     {
         return self::doCurl($url, 'post', $data, $options);
     }
 
-    // get请求
-    public static function doGet($url, $data=[], $options=[])
+    /**
+     * @param $url
+     * @param array $data
+     * @param array $options
+     * @return array|mixed
+     */
+    public static function doGet($url, $data = [], $options = [])
     {
         return self::doCurl($url, 'get', $data, $options);
     }
@@ -24,10 +34,10 @@ class Http
     private static function doCurl($url, $method, $data, $options = [])
     {
         $ch = curl_init();
-        if (strtolower($method) === 'post') { // post请求
+        if (strtolower($method) === 'post') {
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        } elseif (strtolower($method) === 'get') { // get请求
+        } elseif (strtolower($method) === 'get') {
             if ($data) {
                 if (is_array($data)) {
                     $data = http_build_query($data);
@@ -66,18 +76,15 @@ class Http
                 ];
             }
         }
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);     // 返回数据
-        curl_setopt($ch, CURLOPT_TIMEOUT, $options['timeout'] ?? 30);              // 超时时间
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);    // 跳过证书检查
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);    // 从证书中检查SSL加密算法是否存在
-
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, isset($options['timeout']) ? $options['timeout'] : 30);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
         $response = curl_exec($ch);
-        $err_code = curl_errno($ch);    //返回当前对话错误消息的数字编号
-        $err_msg = curl_error($ch);     //返回当前对话错误消息
-        $info = curl_getinfo($ch);      //获取curl连接资源的消息
-
+        $err_code = curl_errno($ch);
+        $err_msg = curl_error($ch);
+        $info = curl_getinfo($ch);
         curl_close($ch);
-
         if($response === false) {
             $result = [
                 'error' => true,
@@ -99,8 +106,6 @@ class Http
         } else{
             $result = json_decode($response,true);
         }
-
         return $result;
-
     }
 }

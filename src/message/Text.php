@@ -18,8 +18,8 @@ class Text extends Base
 
     /**
      * @param mixed $val
-     * string e.g. '13300000001'
-     * array  e.g. ['13300000001','13300000002']
+     *  string e.g. '13300000001'
+     *  array  e.g. ['13300000001','13300000002']
      * @return $this
      */
     public function at($val)
