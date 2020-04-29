@@ -50,7 +50,6 @@ class Base
         }
         $this->url = $options['url'];
         $this->sign_key = $options['sign_key'];
-
     }
 
     /**

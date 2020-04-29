@@ -10,14 +10,26 @@ namespace DingBot\Message;
 
 class Markdown extends Base
 {
-    public function __construct()
+    public function __construct($options)
     {
         $this->params['msgtype'] = 'markdown';
-        parent::__construct();
+        parent::__construct($options);
     }
 
+    /**
+     * @param mixed $val
+     * string e.g. '13300000001'
+     * array e.g. ['13300000001','13300000002']
+     * @return $this
+     */
     public function at($val)
     {
+        if (is_array($val)) {
+            foreach ($val as $item) {
+                $this->at($item);
+            }
+            return $this;
+        }
         $this->params['at']['atMobiles'][] = $val;
         return $this;
     }

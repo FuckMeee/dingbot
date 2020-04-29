@@ -32,6 +32,7 @@ class DingBot
         if (!class_exists($class)) {
             throw new \Exception('消息类型不存在');
         }
-        return new $class();
+        $option = array_shift($arguments);
+        return new $class($option);
     }
 }

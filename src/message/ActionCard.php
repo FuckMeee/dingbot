@@ -10,10 +10,10 @@ namespace DingBot\Message;
 
 class ActionCard extends Base
 {
-    public function __construct()
+    public function __construct($options)
     {
         $this->params['msgtype'] = 'actionCard';
-        parent::__construct();
+        parent::__construct($options);
     }
 
     public function title($val)
@@ -47,8 +47,10 @@ class ActionCard extends Base
     }
 
     /**
-     * @param mixed $val1 title
-     * @param string $val2 actionURL
+     * @param mixed $val1
+     *  string e.g. 'title'
+     *  array e.g. [['title','actionURL'], ['title2','actionURL2']]
+     * @param string $val2
      * @return $this
      */
     public function btns($val1, $val2 = '')

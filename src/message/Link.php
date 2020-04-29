@@ -10,10 +10,10 @@ namespace DingBot\Message;
 
 class Link extends Base
 {
-    public function __construct()
+    public function __construct($options)
     {
         $this->params['msgtype'] = 'link';
-        parent::__construct();
+        parent::__construct($options);
     }
 
     public function text($val)

@@ -10,16 +10,18 @@ namespace DingBot\Message;
 
 class FeedCard extends Base
 {
-    public function __construct()
+    public function __construct($options)
     {
         $this->params['msgtype'] = 'feedCard';
-        parent::__construct();
+        parent::__construct($options);
     }
 
     /**
-     * @param mixed $val1 title
-     * @param string $val2 messageURL
-     * @param string $val3 picURL
+     * @param mixed $val1
+     *  string e.g. 'title'
+     *  array e.g. [['title','messageURL','picURL'], ['title2','messageURL2','picURL2']]
+     * @param string $val2
+     * @param string $val3
      * @return $this
      */
     public function links($val1, $val2 = '', $val3 = '')
