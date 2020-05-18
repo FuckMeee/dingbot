@@ -101,7 +101,7 @@ class Base
     protected function sign()
     {
         $timestamp = time() * 1000;
-        $sign_str = $timestamp . '\n' . $this->sign_key;
+        $sign_str = $timestamp . "\n" . $this->sign_key;
         $sign = urlencode(base64_encode(hash_hmac('sha256', $sign_str, $this->sign_key, true)));
         $this->url .= '&timestamp='.$timestamp.'&sign='.$sign;
     }
